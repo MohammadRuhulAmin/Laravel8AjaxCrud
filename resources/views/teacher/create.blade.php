@@ -57,14 +57,17 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text" placeholder="Enter Name" id="name" class="form-control"/>
+                                <span class="text-danger" id="nameError"></span>
                             </div>
                             <div class="form-group">
                                 <label>Title </label>
                                 <input type="text" placeholder="Enter Title" id="title" class="form-control">
+                                <span class="text-danger" id="titleError"></span>
                             </div>
                             <div class="form-group">
                                 <label>Institute </label>
                                 <input type="text" placeholder="Enter Institute" id="institute" class="form-control">
+                                <span class="text-danger" id="instituteError"></span>
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-primary" onclick="addData()" id="addButton"> Add </button>
@@ -117,6 +120,9 @@
             $('#name').val('');
             $('#title').val('');
             $('#institute').val('');
+            $('#nameError').text('');
+            $('#titleError').text('');
+            $('#instituteError').text('');
          }
          function addData(){
             var name = $('#name').val();
@@ -134,12 +140,28 @@
                 success:function(data){
                     clearData();
                     allData();
-                    
                     console.log("Successfully Data is Added!");
+                },
+
+                error(error){
+                    $('#nameError').text('');
+                    $('#titleError').text('');
+                    $('#instituteError').text('');
+                    if($('#name').val() == ""){
+                        $('#nameError').text(error.responseJSON.errors.name);
+                    }
+                    if($('#title').val() == ""){
+                        $('#titleError').text(error.responseJSON.errors.title);
+                    }
+                    if($('#institute').val() == ""){
+                        $('#instituteError').text(error.responseJSON.errors.institute);
+                    }
+                   
+                    
+                    
                 }
             })
          }
-
 
      </script>
         <script src="{{asset('js/jquery.js')}}"></script>
