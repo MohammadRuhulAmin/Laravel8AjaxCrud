@@ -69,9 +69,10 @@
                                 <input type="text" placeholder="Enter Institute" id="institute" class="form-control">
                                 <span class="text-danger" id="instituteError"></span>
                             </div>
+                            <input type="hidden" id="id">
                             <div>
                                 <button type="submit" class="btn btn-primary" onclick="addData()" id="addButton"> Add </button>
-                                <button type="submit" class="btn btn-success" id="updateButton"> Update </button>
+                                <button type="submit" class="btn btn-success" onclick="updateData()" id="updateButton"> Update </button>
                             </div>
                         </div>
                     </div>
@@ -140,6 +141,7 @@
                 success:function(data){
                     clearData();
                     allData();
+
                     console.log("Successfully Data is Added!");
                 },
 
@@ -170,13 +172,45 @@
                  dataType:"json",
                  url:"/teachers/"+id + "/edit",
                  success :function(data){
+                     $('#id').val(data.id);
                     $('#name').val(data.name);
                     $('#title').val(data.title);
                     $('#institute').val(data.institute);
+                    $('#addButton').hide();
+                    $('#updateButton').show();
+                    $('#updateT').show();
+                    $('#addT').hide();
                  }
              })
          }
 
+         function updateData(){
+             var id = $('#id').val();
+             var name = $('#name').val();
+             var title = $('#title').val();
+             var institute = $('#institute').val();
+             let _token   = $('meta[name="csrf-token"]').attr('content');
+             $.ajax({
+                 type:"PUT",
+                 dataType:"json",
+                 data:{_token:_token ,name:name,title:title,institute:institute},
+                 url:"/teachers/"+id , 
+                 success:function(response){
+                     clearData();
+                     allData();
+                     $('#addT').show();
+                        $('#updateT').hide();
+                        $('#addButton').show();
+                        $('#updateButton').hide();
+                     console.log(response)
+                 },
+                 error:function(error){
+                     console.log(error)
+                 }
+             })
+         }
+
+       
      </script>
         <script src="{{asset('js/jquery.js')}}"></script>
         <script src="{{asset('js/bootstrap.js')}}"></script>
@@ -184,3 +218,5 @@
         <script src="{{asset('js/jqajax.js')}}"></script>
 </body>
 </html>
+
+{{-- https://codingdriver.com/laravel-ajax-crud-example-tutorial-from-scratch.html --}}

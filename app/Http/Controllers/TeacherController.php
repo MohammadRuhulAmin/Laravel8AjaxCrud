@@ -81,7 +81,17 @@ class TeacherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'name' =>'required',
+            'title' =>'required',
+            'institute' =>'required',
+        ]);
+        $data = Teacher::findOrFail($id)->update([
+            'name' =>$request->name,
+            'title' =>$request->title,
+            'institute' =>$request->institute 
+        ]);
+        return response()->json($data);
     }
 
     /**
