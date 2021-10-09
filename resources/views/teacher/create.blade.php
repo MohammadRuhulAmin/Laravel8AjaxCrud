@@ -107,7 +107,7 @@
                         data +="<td>"+ value.name + "</td>"
                         data +="<td>"+ value.title + "</td>"
                         data +="<td>"+ value.institute + "</td>"
-                        data +="<td>"+ "<button class='btn btn-sm btn-primary mr-2'>Edit</button>" 
+                        data +="<td>"+ "<button class='btn btn-sm btn-primary mr-2' onclick='editData("+value.id+")'>Edit</button>" 
                         data += "<button class='btn btn-sm btn-danger mr-2'>Delete</button>" +"</td>"
                         data += "</tr>";
                     })
@@ -161,6 +161,20 @@
                     
                 }
             })
+         }
+
+         function editData(id){
+             
+             $.ajax({
+                 type:"GET",
+                 dataType:"json",
+                 url:"/teachers/"+id + "/edit",
+                 success :function(data){
+                    $('#name').val(data.name);
+                    $('#title').val(data.title);
+                    $('#institute').val(data.institute);
+                 }
+             })
          }
 
      </script>
